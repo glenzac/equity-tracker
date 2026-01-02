@@ -1,0 +1,1530 @@
+/* Equity Tracker - Professional Financial Dashboard */
+
+/* ==========================================
+   1. DESIGN TOKENS (Financial Dashboard Palette)
+   ========================================== */
+
+:root {
+  /* Primary - Slate-based for trust and professionalism */
+  --color-primary: #1E293B;
+  /* Slate 800 - primary actions */
+  --color-primary-hover: #334155;
+  /* Slate 700 */
+  --color-primary-light: #F1F5F9;
+  /* Slate 100 */
+
+  /* Accent - Emerald for financial positive indicators */
+  --color-accent: #10B981;
+  /* Emerald 500 */
+  --color-accent-hover: #059669;
+  /* Emerald 600 */
+  --color-accent-light: #D1FAE5;
+  /* Emerald 100 */
+
+  /* Secondary - For less prominent actions */
+  --color-secondary: #475569;
+  /* Slate 600 */
+  --color-secondary-light: #64748B;
+  /* Slate 500 */
+
+  /* Semantic Colors */
+  --color-success: #16A34A;
+  --color-success-bg: #F0FDF4;
+  --color-danger: #DC2626;
+  --color-danger-bg: #FEF2F2;
+  --color-warning: #D97706;
+  --color-warning-bg: #FFFBEB;
+  --color-info: #0284C7;
+  --color-info-bg: #F0F9FF;
+
+  /* Neutrals - Slate grayscale for cohesion */
+  --gray-25: #FCFCFD;
+  --gray-50: #F8FAFC;
+  /* Slate 50 */
+  --gray-100: #F1F5F9;
+  /* Slate 100 */
+  --gray-200: #E2E8F0;
+  /* Slate 200 */
+  --gray-300: #CBD5E1;
+  /* Slate 300 */
+  --gray-400: #94A3B8;
+  /* Slate 400 */
+  --gray-500: #64748B;
+  /* Slate 500 */
+  --gray-600: #475569;
+  /* Slate 600 */
+  --gray-700: #334155;
+  /* Slate 700 */
+  --gray-800: #1E293B;
+  /* Slate 800 */
+  --gray-900: #0F172A;
+  /* Slate 900 */
+
+  /* Background & Surface */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+
+  /* Shadows - Subtle, professional */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px rgba(15, 23, 42, 0.05), 0 2px 4px rgba(15, 23, 42, 0.03);
+  --shadow-lg: 0 10px 15px rgba(15, 23, 42, 0.05), 0 4px 6px rgba(15, 23, 42, 0.03);
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Spacing (8px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Monaco, monospace;
+
+  /* Type Scale (1.25 ratio) */
+  --text-xs: 0.75rem;
+  /* 12px */
+  --text-sm: 0.8125rem;
+  /* 13px */
+  --text-base: 0.875rem;
+  /* 14px */
+  --text-lg: 1rem;
+  /* 16px */
+  --text-xl: 1.125rem;
+  /* 18px */
+  --text-2xl: 1.375rem;
+  /* 22px */
+  --text-3xl: 1.75rem;
+  /* 28px */
+
+  /* Line Heights */
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  /* Sidebar */
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+}
+
+/* ==========================================
+   2. BASE RESET & DEFAULTS
+   ========================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--gray-700);
+  background: var(--color-background);
+  line-height: var(--leading-normal);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: none;
+}
+
+/* ==========================================
+   3. LAYOUT - SIDEBAR DASHBOARD
+   ========================================== */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-header {
+  padding: var(--space-5) var(--space-5);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--gray-900);
+  text-decoration: none;
+}
+
+.sidebar-brand:hover {
+  color: var(--gray-900);
+  text-decoration: none;
+}
+
+.sidebar-brand i {
+  color: var(--color-accent);
+  font-size: 1.25rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: var(--space-4) var(--space-3);
+  overflow-y: auto;
+}
+
+.sidebar-section {
+  margin-bottom: var(--space-6);
+}
+
+.sidebar-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748B !important;
+  /* gray-500 - explicit for contrast */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu-item {
+  margin-bottom: 2px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #334155;
+  /* gray-700 - good contrast */
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background: #F1F5F9;
+  /* gray-100 */
+  color: #0F172A;
+  /* gray-900 */
+  text-decoration: none;
+}
+
+.sidebar-link i {
+  font-size: 1rem;
+  width: 20px;
+  text-align: center;
+  color: #64748B;
+  /* gray-500 */
+}
+
+.sidebar-link:hover i {
+  color: #334155;
+  /* gray-700 */
+}
+
+.sidebar-link.active {
+  background: #0F172A;
+  /* gray-900 */
+  color: #FFFFFF;
+}
+
+.sidebar-link.active i {
+  color: #FFFFFF;
+}
+
+.sidebar-footer {
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--gray-100);
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.content-body {
+  flex: 1;
+  padding: var(--space-6);
+}
+
+/* Mobile Sidebar Toggle */
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  color: var(--gray-600);
+  cursor: pointer;
+}
+
+.sidebar-toggle:hover {
+  background: var(--gray-100);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 90;
+}
+
+/* ==========================================
+   4. LEGACY NAVBAR SUPPORT (Fallback)
+   ========================================== */
+
+.navbar {
+  background: var(--color-surface) !important;
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: none;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--gray-900) !important;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.navbar-brand i {
+  color: var(--color-accent);
+}
+
+.navbar .nav-link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--gray-700) !important;
+  padding: var(--space-2) var(--space-3) !important;
+  border-radius: var(--radius-md);
+  transition: all 0.15s ease;
+}
+
+.navbar .nav-link:hover {
+  color: var(--gray-900) !important;
+  background: var(--gray-100);
+}
+
+.navbar .nav-link.active {
+  color: white !important;
+  background: var(--gray-900);
+}
+
+.navbar .nav-link i {
+  margin-right: var(--space-2);
+}
+
+/* ==========================================
+   5. PAGE HEADER
+   ========================================== */
+
+.page-header {
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.page-header h2 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  line-height: var(--leading-tight);
+}
+
+.page-header h2 i {
+  color: var(--gray-400);
+  font-size: 1.25rem;
+}
+
+.page-header .page-subtitle {
+  color: var(--gray-500);
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
+  line-height: var(--leading-normal);
+}
+
+.page-header .page-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ==========================================
+   6. CARDS
+   ========================================== */
+
+.card {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  margin-bottom: var(--space-4);
+  transition: box-shadow 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
+}
+
+.card-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--gray-100);
+  padding: var(--space-4) var(--space-5);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--gray-700);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header h5 {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--gray-700);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.card-header h5 i {
+  color: var(--gray-400);
+}
+
+.card-body {
+  padding: var(--space-5);
+}
+
+.card-footer {
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-100);
+  padding: var(--space-4) var(--space-5);
+}
+
+/* Metric Cards - Equal Height Row */
+.row>[class*="col"]:has(.metric-card),
+.row>.col-sm-6:has(.metric-card),
+.row>.col-xl-3:has(.metric-card),
+.row>.col-md-3:has(.metric-card),
+.row>.col-md-4:has(.metric-card) {
+  display: flex;
+}
+
+/* Fallback for browsers without :has() - add this class to parent row */
+.metric-row>[class*="col"] {
+  display: flex;
+}
+
+/* Metric Cards */
+.metric-card {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  padding: var(--space-5);
+  position: relative;
+  transition: box-shadow 0.15s ease;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-card:hover {
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
+}
+
+.metric-card .metric-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-2);
+}
+
+.metric-card .metric-value {
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  color: var(--gray-900);
+  line-height: var(--leading-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-card .metric-change {
+  font-size: var(--text-sm);
+  margin-top: var(--space-2);
+  color: var(--gray-500);
+}
+
+/* Metric pill badge for percentages */
+.metric-pill {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  margin-left: var(--space-2);
+  vertical-align: middle;
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.metric-pill.text-success {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.metric-pill.text-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+/* Metric card accent variants - using pseudo-element for left accent */
+.metric-card.primary,
+.metric-card.success,
+.metric-card.danger,
+.metric-card.neutral,
+.metric-card.info,
+.metric-card.warning {
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card.primary::before,
+.metric-card.success::before,
+.metric-card.danger::before,
+.metric-card.neutral::before,
+.metric-card.info::before,
+.metric-card.warning::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.metric-card.primary::before {
+  background: var(--color-accent);
+}
+
+.metric-card.success::before {
+  background: var(--color-success);
+}
+
+.metric-card.success .metric-value {
+  color: var(--color-success);
+}
+
+.metric-card.danger::before {
+  background: var(--color-danger);
+}
+
+.metric-card.danger .metric-value {
+  color: var(--color-danger);
+}
+
+.metric-card.neutral::before {
+  background: var(--gray-400);
+}
+
+.metric-card.info::before {
+  background: var(--color-info);
+}
+
+.metric-card.warning::before {
+  background: var(--color-warning);
+}
+
+/* Holding Cards */
+.holding-card {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.holding-card:hover {
+  box-shadow: 0 4px 6px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.04);
+}
+
+.holding-card.profit::before,
+.holding-card.loss::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.holding-card.profit::before {
+  background: var(--color-success);
+}
+
+.holding-card.loss::before {
+  background: var(--color-danger);
+}
+
+/* Settings cards */
+.settings-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.settings-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: var(--text-sm);
+}
+
+.settings-list-item:last-child {
+  border-bottom: none;
+}
+
+/* ==========================================
+   7. TABLES
+   ========================================== */
+
+.table {
+  font-size: var(--text-sm);
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.table th {
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200) !important;
+  border-top: none !important;
+  color: var(--gray-500);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: var(--space-3) var(--space-4) !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.table th.text-end {
+  text-align: right;
+}
+
+.table td {
+  border-bottom: 1px solid var(--gray-100) !important;
+  border-top: none !important;
+  padding: var(--space-3) var(--space-4) !important;
+  vertical-align: middle !important;
+  color: var(--gray-700);
+}
+
+.table tbody tr {
+  transition: background 0.1s ease;
+}
+
+.table-hover tbody tr:hover {
+  background: var(--gray-50) !important;
+}
+
+.table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.table th.sortable:hover {
+  background: var(--gray-100);
+}
+
+.table th.sortable::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--gray-300);
+  opacity: 0.5;
+}
+
+.table th.sortable.asc::after {
+  border-top: none;
+  border-bottom: 4px solid var(--gray-600);
+  opacity: 1;
+}
+
+.table th.sortable.desc::after {
+  border-top: 4px solid var(--gray-600);
+  opacity: 1;
+}
+
+.table .text-end {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-base);
+}
+
+/* Ensure numeric values in tables are readable */
+.table td {
+  font-size: var(--text-base);
+}
+
+/* Table responsive wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================
+   8. FORMS
+   ========================================== */
+
+.form-control,
+.form-select {
+  font-size: var(--text-sm);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  color: var(--gray-700);
+  background-color: var(--color-surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  line-height: var(--leading-normal);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--gray-900);
+  box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+  outline: none;
+}
+
+.form-control::placeholder {
+  color: var(--gray-400);
+}
+
+.form-control-sm,
+.form-select-sm {
+  padding: 6px var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--gray-700);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+.form-text {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+  margin-top: var(--space-1);
+}
+
+.input-group-text {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--gray-600);
+}
+
+/* Filter Card */
+.filter-card {
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.filter-card .filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: flex-end;
+}
+
+.filter-card .filter-group {
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-card .filter-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+/* ==========================================
+   9. BUTTONS
+   ========================================== */
+
+.btn {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  cursor: pointer;
+  line-height: var(--leading-normal);
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(30, 41, 59, 0.1);
+}
+
+.btn i {
+  font-size: 0.9rem;
+}
+
+/* Primary - Dark slate */
+.btn-primary {
+  background: var(--gray-900);
+  border-color: var(--gray-900);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--gray-800);
+  border-color: var(--gray-800);
+  color: white;
+}
+
+/* Success - Emerald accent */
+.btn-success {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background: #15803D;
+  border-color: #15803D;
+  color: white;
+}
+
+/* Danger */
+.btn-danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #B91C1C;
+  border-color: #B91C1C;
+  color: white;
+}
+
+/* Outline variants */
+.btn-outline-primary {
+  color: var(--gray-700);
+  border-color: var(--gray-300);
+  background: var(--color-surface);
+}
+
+.btn-outline-primary:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+  color: var(--gray-900);
+}
+
+.btn-outline-secondary {
+  color: var(--gray-600);
+  border-color: var(--gray-300);
+  background: var(--color-surface);
+}
+
+.btn-outline-secondary:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+  color: var(--gray-700);
+}
+
+.btn-outline-danger {
+  color: var(--color-danger);
+  border-color: var(--gray-300);
+  background: var(--color-surface);
+}
+
+.btn-outline-danger:hover {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* Size variants */
+.btn-sm {
+  padding: 5px var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.btn-lg {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+}
+
+/* ==========================================
+   10. BADGES
+   ========================================== */
+
+.badge {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.badge.bg-secondary {
+  background: var(--gray-200) !important;
+  color: var(--gray-700);
+}
+
+.badge.bg-success {
+  background: var(--color-success-bg) !important;
+  color: var(--color-success);
+}
+
+.badge.bg-danger {
+  background: var(--color-danger-bg) !important;
+  color: var(--color-danger);
+}
+
+.badge.bg-warning {
+  background: var(--color-warning-bg) !important;
+  color: var(--color-warning);
+}
+
+.badge.bg-info {
+  background: var(--color-info-bg) !important;
+  color: var(--color-info);
+}
+
+/* Sector badges - Pill style */
+.sector-badge {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.sector-it {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.sector-banks {
+  background: #E0E7FF;
+  color: #4338CA;
+}
+
+.sector-energy {
+  background: #FFEDD5;
+  color: #C2410C;
+}
+
+.sector-infra {
+  background: #D1FAE5;
+  color: #047857;
+}
+
+.sector-pharma {
+  background: #FCE7F3;
+  color: #BE185D;
+}
+
+.sector-fmcg {
+  background: #DCFCE7;
+  color: #166534;
+}
+
+.sector-auto {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+.sector-metals {
+  background: #FEF3C7;
+  color: #A16207;
+}
+
+.sector-finance {
+  background: #E0E7FF;
+  color: #4338CA;
+}
+
+.sector-other {
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.allocation-badge {
+  font-size: var(--text-xs);
+  padding: 2px 6px;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================
+   11. P&L INDICATORS
+   ========================================== */
+
+.text-profit,
+.pnl-positive,
+.text-success {
+  color: var(--color-success) !important;
+}
+
+.text-loss,
+.pnl-negative,
+.text-danger {
+  color: var(--color-danger) !important;
+}
+
+.currency::before {
+  content: '\20B9';
+}
+
+/* ==========================================
+   12. UPLOAD AREA
+   ========================================== */
+
+.upload-area {
+  border: 2px dashed var(--gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  text-align: center;
+  background: var(--gray-50);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.upload-area:hover {
+  border-color: var(--gray-400);
+  background: var(--color-surface);
+}
+
+.upload-area.dragover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-light);
+}
+
+.upload-area .upload-icon {
+  font-size: 2.5rem;
+  color: var(--gray-400);
+  margin-bottom: var(--space-4);
+}
+
+.upload-area .upload-text {
+  color: var(--gray-600);
+  font-size: var(--text-sm);
+}
+
+.upload-area .upload-text strong {
+  color: var(--gray-900);
+}
+
+/* ==========================================
+   13. CHARTS
+   ========================================== */
+
+.chart-container {
+  position: relative;
+  height: 280px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-container canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.chart-card .card-body {
+  padding: var(--space-4);
+}
+
+/* ==========================================
+   14. MODALS
+   ========================================== */
+
+.modal-content {
+  border: none;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--gray-100);
+  padding: var(--space-4) var(--space-5);
+}
+
+.modal-title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.modal-body {
+  padding: var(--space-5);
+}
+
+.modal-footer {
+  background: var(--gray-50);
+  border-top: 1px solid var(--gray-100);
+  padding: var(--space-4) var(--space-5);
+}
+
+.btn-close {
+  opacity: 0.5;
+}
+
+.btn-close:hover {
+  opacity: 1;
+}
+
+/* ==========================================
+   15. ALERTS
+   ========================================== */
+
+.alert {
+  font-size: var(--text-sm);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  border: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.alert i {
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+.alert-success {
+  background: var(--color-success-bg);
+  color: #166534;
+}
+
+.alert-danger {
+  background: var(--color-danger-bg);
+  color: #B91C1C;
+}
+
+.alert-warning {
+  background: var(--color-warning-bg);
+  color: #A16207;
+}
+
+.alert-info {
+  background: var(--color-info-bg);
+  color: #0369A1;
+}
+
+/* ==========================================
+   16. DROPDOWNS
+   ========================================== */
+
+.dropdown-menu {
+  font-size: var(--text-sm);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2);
+  min-width: 180px;
+}
+
+.dropdown-item {
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  color: var(--gray-700);
+  font-weight: 500;
+  transition: all 0.1s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--gray-100);
+  color: var(--gray-900);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  background: var(--gray-900);
+  color: white;
+}
+
+.dropdown-divider {
+  border-color: var(--gray-100);
+  margin: var(--space-2) 0;
+}
+
+/* ==========================================
+   17. FOOTER
+   ========================================== */
+
+footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-4) 0;
+  margin-top: auto;
+}
+
+footer small {
+  color: var(--gray-500);
+  font-size: var(--text-xs);
+}
+
+/* ==========================================
+   18. LOADING STATES
+   ========================================== */
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner-border {
+  color: var(--gray-900) !important;
+}
+
+/* Skeleton loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================
+   19. UTILITIES
+   ========================================== */
+
+.text-muted {
+  color: var(--gray-500) !important;
+}
+
+.text-primary {
+  color: var(--color-accent) !important;
+}
+
+.bg-light {
+  background-color: var(--gray-50) !important;
+}
+
+.stock-symbol {
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.stock-name {
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+}
+
+.qty-display {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.price-display {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--space-10) var(--space-6);
+  color: var(--gray-500);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+  color: var(--gray-300);
+}
+
+.empty-state h5 {
+  color: var(--gray-600);
+  font-size: var(--text-base);
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+.empty-state p {
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+/* ==========================================
+   20. BREADCRUMB
+   ========================================== */
+
+.breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+}
+
+.breadcrumb-item a {
+  color: var(--color-accent);
+}
+
+.breadcrumb-item.active {
+  color: var(--gray-500);
+}
+
+.breadcrumb-item+.breadcrumb-item::before {
+  color: var(--gray-400);
+}
+
+/* ==========================================
+   21. LIST GROUP
+   ========================================== */
+
+.list-group-item {
+  border-color: var(--gray-100);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--gray-700);
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+}
+
+.list-group-item:last-child {
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+/* ==========================================
+   22. PROGRESS
+   ========================================== */
+
+.progress {
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background: var(--color-accent);
+  border-radius: 100px;
+}
+
+/* ==========================================
+   23. RESPONSIVE
+   ========================================== */
+
+@media (max-width: 991.98px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-header .page-actions {
+    width: 100%;
+  }
+
+  .metric-card .metric-value {
+    font-size: var(--text-2xl);
+  }
+
+  .filter-card .filter-row {
+    flex-direction: column;
+  }
+
+  .filter-card .filter-group {
+    width: 100%;
+  }
+
+  .content-body {
+    padding: var(--space-4);
+  }
+
+  .card-body {
+    padding: var(--space-4);
+  }
+}
+
+/* ==========================================
+   24. PRINT STYLES
+   ========================================== */
+
+@media print {
+
+  .sidebar,
+  .navbar,
+  .page-actions,
+  .filter-card,
+  footer {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}

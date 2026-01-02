@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio - Equity Tracker{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2><i class="fa-solid fa-briefcase"></i> Portfolio</h2>
+        <p class="page-subtitle">Your current stock holdings</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-outline-primary" id="refresh-prices">
+            <i class="fa-solid fa-rotate"></i> Refresh Prices
+        </button>
+        <button class="btn btn-outline-secondary" id="export-csv">
+            <i class="fa-solid fa-download"></i> Export CSV
+        </button>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="filter-card">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label class="filter-label">Broker</label>
+            <select class="form-select form-select-sm" id="filter-broker">
+                <option value="">All Brokers</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Account</label>
+            <select class="form-select form-select-sm" id="filter-account">
+                <option value="">All Accounts</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Owner</label>
+            <select class="form-select form-select-sm" id="filter-owner">
+                <option value="">All Owners</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Goal</label>
+            <select class="form-select form-select-sm" id="filter-goal">
+                <option value="">All Goals</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Sector</label>
+            <select class="form-select form-select-sm" id="filter-sector">
+                <option value="">All Sectors</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Search</label>
+            <input type="text" class="form-control form-control-sm" id="filter-search" placeholder="Symbol or name...">
+        </div>
+    </div>
+</div>
+
+<!-- Holdings List -->
+<div id="holdings-container">
+    <div class="empty-state">
+        <i class="fa-solid fa-inbox"></i>
+        <h5>No holdings yet</h5>
+        <p><a href="{{ url_for('main.import_data') }}">Import data</a> to get started.</p>
+    </div>
+</div>
+{% endblock %}

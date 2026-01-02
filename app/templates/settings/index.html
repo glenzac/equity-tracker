@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Equity Tracker{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2><i class="fa-solid fa-gear"></i> Settings</h2>
+        <p class="page-subtitle">Manage brokers, accounts, owners, goals, and sectors</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Brokers -->
+    <div class="col-md-6">
+        <div class="card settings-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-building me-2"></i>Brokers</h5>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBrokerModal">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div class="card-body">
+                <ul class="settings-list" id="brokers-list">
+                    <li class="settings-list-item text-muted">No brokers configured yet.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accounts -->
+    <div class="col-md-6">
+        <div class="card settings-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-wallet me-2"></i>Accounts</h5>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div class="card-body">
+                <ul class="settings-list" id="accounts-list">
+                    <li class="settings-list-item text-muted">No accounts configured yet.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-0">
+    <!-- Owners -->
+    <div class="col-md-6">
+        <div class="card settings-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-users me-2"></i>Owners</h5>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addOwnerModal">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div class="card-body">
+                <ul class="settings-list" id="owners-list">
+                    <li class="settings-list-item">
+                        <span>#DEFAULT</span>
+                        <span class="badge bg-secondary">System</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goals -->
+    <div class="col-md-6">
+        <div class="card settings-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-bullseye me-2"></i>Goals</h5>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addGoalModal">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div class="card-body">
+                <ul class="settings-list" id="goals-list">
+                    <li class="settings-list-item">
+                        <span>#UNASSIGNED</span>
+                        <span class="badge bg-secondary">System</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-0">
+    <!-- Sectors -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-grip me-2"></i>Sectors</h5>
+                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addSectorModal">
+                    <i class="fa-solid fa-plus"></i> Add
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="sectors-container" class="d-flex flex-wrap gap-2">
+                    <span class="badge sector-badge sector-other">Loading sectors...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-0">
+    <!-- Stock Assignment (Sector & Exchange) -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                <h5 class="mb-0"><i class="fa-solid fa-tags me-2"></i>Stock Assignment</h5>
+                <small class="text-muted" style="font-weight: normal;">Assign sectors and exchanges to your stocks for accurate portfolio analysis</small>
+            </div>
+            <div class="card-body p-0" id="stocks-container">
+                <div class="text-center py-5">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                    <p class="text-muted mt-2 mb-0">Loading stocks...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Broker Modal -->
+<div class="modal fade" id="addBrokerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Broker</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="add-broker-form">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Broker Name</label>
+                        <input type="text" class="form-control" id="broker-name" name="name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Broker</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Account Modal -->
+<div class="modal fade" id="addAccountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="add-account-form">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Broker</label>
+                        <select class="form-select" id="account-broker" name="broker_id" required>
+                            <option value="">Select broker...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <input type="text" class="form-control" id="account-number" name="account_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Account Name (Optional)</label>
+                        <input type="text" class="form-control" id="account-name" name="name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Account</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Owner Modal -->
+<div class="modal fade" id="addOwnerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Owner</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="add-owner-form">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Owner Name</label>
+                        <input type="text" class="form-control" id="owner-name" name="name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Owner</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Goal Modal -->
+<div class="modal fade" id="addGoalModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Goal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="add-goal-form">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Goal Name</label>
+                        <input type="text" class="form-control" id="goal-name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target Amount (Optional)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">&#8377;</span>
+                            <input type="number" class="form-control" id="goal-target" name="target_amount" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Owner Modal -->
+<div class="modal fade" id="editOwnerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Owner</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="edit-owner-form">
+                <input type="hidden" id="edit-owner-id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Owner Name</label>
+                        <input type="text" class="form-control" id="edit-owner-name" name="name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Goal Modal -->
+<div class="modal fade" id="editGoalModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Goal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="edit-goal-form">
+                <input type="hidden" id="edit-goal-id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Goal Name</label>
+                        <input type="text" class="form-control" id="edit-goal-name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target Amount (Optional)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">&#8377;</span>
+                            <input type="number" class="form-control" id="edit-goal-target" name="target_amount" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Broker Modal -->
+<div class="modal fade" id="editBrokerModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Broker</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="edit-broker-form">
+                <input type="hidden" id="edit-broker-id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Broker Name</label>
+                        <input type="text" class="form-control" id="edit-broker-name" name="name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Account Modal -->
+<div class="modal fade" id="editAccountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="edit-account-form">
+                <input type="hidden" id="edit-account-id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Account Number</label>
+                        <input type="text" class="form-control" id="edit-account-number" name="account_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Account Name (Optional)</label>
+                        <input type="text" class="form-control" id="edit-account-name" name="name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

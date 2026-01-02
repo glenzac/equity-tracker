@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Equity Tracker{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2><i class="fa-solid fa-chart-line"></i> Dashboard</h2>
+        <p class="page-subtitle">Overview of your portfolio performance</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-outline-secondary btn-sm" id="refresh-prices-btn">
+            <i class="fa-solid fa-rotate"></i> Refresh Prices
+        </button>
+    </div>
+</div>
+
+<!-- Summary Metric Cards -->
+<div class="row mb-4 g-3 metric-row">
+    <div class="col-sm-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Total Value</div>
+            <div class="metric-value" id="total-value">--</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Invested</div>
+            <div class="metric-value" id="total-invested">--</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="metric-card" id="pnl-card">
+            <div class="metric-label">Unrealized P&L</div>
+            <div class="metric-value" id="unrealized-pnl">--</div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="metric-card">
+            <div class="metric-label">Today's Change</div>
+            <div class="metric-value" id="today-change">--</div>
+            <div class="metric-change" id="today-change-percent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="filter-card">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label class="filter-label">Owner</label>
+            <select class="form-select form-select-sm" id="owner-filter">
+                <option value="">All Owners</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Goal</label>
+            <select class="form-select form-select-sm" id="goal-filter">
+                <option value="">All Goals</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Account</label>
+            <select class="form-select form-select-sm" id="account-filter">
+                <option value="">All Accounts</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row mb-4 g-4">
+    <div class="col-lg-6">
+        <div class="card chart-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-chart-pie me-2"></i>Sector Allocation</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="sector-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card chart-card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fa-solid fa-chart-bar me-2"></i>FY-wise P&L</h5>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="fy-pnl-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Top Holdings -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fa-solid fa-trophy me-2"></i>Top Holdings</h5>
+        <a href="{{ url_for('main.portfolio') }}" class="btn btn-sm btn-primary">
+            View All <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover" id="holdings-table">
+                <thead>
+                    <tr>
+                        <th>Stock</th>
+                        <th class="text-end">Qty</th>
+                        <th class="text-end">Avg Price</th>
+                        <th class="text-end">Current</th>
+                        <th class="text-end">Value</th>
+                        <th class="text-end">P&L</th>
+                        <th class="text-end">%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-inbox"></i>
+                                <h5>No holdings yet</h5>
+                                <p><a href="{{ url_for('main.import_data') }}">Import data</a> to get started.</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Dashboard will be populated via API calls
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize charts with placeholder data
+        // This will be replaced with actual API data
+    });
+</script>
+{% endblock %}

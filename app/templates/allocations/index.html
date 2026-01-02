@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Allocations - Equity Tracker{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2><i class="fa-solid fa-chart-pie"></i> Allocations</h2>
+        <p class="page-subtitle">Manage unit-level allocation to owners and goals</p>
+    </div>
+</div>
+
+<!-- Allocations Content -->
+<div id="allocations-container">
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-muted mt-3">Loading allocations...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

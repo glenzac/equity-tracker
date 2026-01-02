@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Equity Tracker{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='img/favicon.svg') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand" href="{{ url_for('main.dashboard') }}">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    <span>Equity Tracker</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Overview</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}"
+                                href="{{ url_for('main.dashboard') }}">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.portfolio' or request.endpoint == 'main.portfolio_detail' %}active{% endif %}"
+                                href="{{ url_for('main.portfolio') }}">
+                                <i class="fa-solid fa-briefcase"></i>
+                                <span>Portfolio</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Transactions</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.trades' %}active{% endif %}"
+                                href="{{ url_for('main.trades') }}">
+                                <i class="fa-solid fa-right-left"></i>
+                                <span>Trades</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.allocations' %}active{% endif %}"
+                                href="{{ url_for('main.allocations') }}">
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>Allocations</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.import_data' %}active{% endif %}"
+                                href="{{ url_for('main.import_data') }}">
+                                <i class="fa-solid fa-upload"></i>
+                                <span>Import</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Analytics</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.reports' %}active{% endif %}"
+                                href="{{ url_for('main.reports') }}">
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Configuration</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menu-item">
+                            <a class="sidebar-link {% if request.endpoint == 'main.settings' %}active{% endif %}"
+                                href="{{ url_for('main.settings') }}">
+                                <i class="fa-solid fa-gear"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Header Bar (Mobile) -->
+            <header class="content-header d-lg-none">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <a class="sidebar-brand" href="{{ url_for('main.dashboard') }}">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    <span>Equity Tracker</span>
+                </a>
+                <div></div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="content-body">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <i
+                        class="fa-solid fa-{% if category == 'success' %}circle-check{% elif category == 'danger' %}circle-exclamation{% elif category == 'warning' %}triangle-exclamation{% else %}circle-info{% endif %}"></i>
+                    <span>{{ message }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </div>
+
+            <!-- Footer -->
+            <footer>
+                <div class="container-fluid px-4 text-center">
+                    <small>Equity Tracker - Indian Stock Market Portfolio Management (v{{ version }})</small>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // Sidebar toggle for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function (e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.sidebar-toggle');
+            if (window.innerWidth < 992 &&
+                sidebar.classList.contains('show') &&
+                !sidebar.contains(e.target) &&
+                !toggle.contains(e.target)) {
+                sidebar.classList.remove('show');
+                document.getElementById('sidebar-overlay').classList.remove('show');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function () {
+            if (window.innerWidth >= 992) {
+                document.getElementById('sidebar').classList.remove('show');
+                document.getElementById('sidebar-overlay').classList.remove('show');
+            }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Trades - Equity Tracker{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2><i class="fa-solid fa-right-left"></i> Trades</h2>
+        <p class="page-subtitle">Your trade history</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addTradeModal">
+            <i class="fa-solid fa-plus"></i> Add Trade
+        </button>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="filter-card">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label class="filter-label">Account</label>
+            <select class="form-select form-select-sm" id="filter-account">
+                <option value="">All Accounts</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Stock</label>
+            <select class="form-select form-select-sm" id="filter-stock">
+                <option value="">All Stocks</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Type</label>
+            <select class="form-select form-select-sm" id="filter-type">
+                <option value="">All Types</option>
+                <option value="buy">Buy</option>
+                <option value="sell">Sell</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">From Date</label>
+            <input type="date" class="form-control form-control-sm" id="filter-from-date">
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">To Date</label>
+            <input type="date" class="form-control form-control-sm" id="filter-to-date">
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Search</label>
+            <input type="text" class="form-control form-control-sm" id="filter-search" placeholder="Symbol...">
+        </div>
+    </div>
+</div>
+
+<!-- Trades Table -->
+<div id="trades-container">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

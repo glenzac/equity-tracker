@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Reports - Equity Tracker{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+    <div>
+        <h2><i class="fa-solid fa-chart-line"></i> Reports</h2>
+        <p class="page-subtitle">Analyze your portfolio performance and tax obligations</p>
+    </div>
+</div>
+
+<!-- Report Filters -->
+<div class="filter-card">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label class="filter-label">Financial Year</label>
+            <select class="form-select form-select-sm" id="filter-fy">
+                <option value="">All Years</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Account</label>
+            <select class="form-select form-select-sm" id="filter-account">
+                <option value="">All Accounts</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Owner</label>
+            <select class="form-select form-select-sm" id="filter-owner">
+                <option value="">All Owners</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Report Type</label>
+            <select class="form-select form-select-sm" id="report-type">
+                <option value="pnl">P&L Summary</option>
+                <option value="sector">Sector Allocation</option>
+                <option value="goal">Goal Progress</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- P&L Report Content -->
+<div id="pnl-report">
+    <div class="card">
+        <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="text-muted mt-3">Loading report data...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
